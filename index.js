@@ -18,7 +18,7 @@ require("dotenv").config();
 // ─── Config ───────────────────────────────────────────────────────────────────
 const TOKEN = process.env.DISCORD_TOKEN;
 const CLIENT_ID = process.env.CLIENT_ID;
-const CHECK_INTERVAL_MINUTES = parseInt(process.env.CHECK_INTERVAL_MINUTES) || 30;
+const CHECK_INTERVAL_SECONDS = parseInt(process.env.CHECK_INTERVAL_SECONDS) || 60;
 // Comma-separated Discord User IDs jo setchannel use kar sakein
 const ALLOWED_USER_IDS = (process.env.ALLOWED_USER_IDS || "").split(",").map((s) => s.trim()).filter(Boolean);
 
@@ -111,7 +111,7 @@ client.once("ready", async () => {
   console.log(`╚════════════════════════════════╝\n`);
   await registerCommands();
   checkAllFeeds();
-  setInterval(checkAllFeeds, CHECK_INTERVAL_MINUTES * 60 * 1000);
+  setInterval(checkAllFeeds, CHECK_INTERVAL_SECONDS * 1000);
 });
 
 // ─── Feed Checker ─────────────────────────────────────────────────────────────
@@ -374,7 +374,7 @@ async function handleSetChannel(interaction, gameKey) {
     .setTitle("✅ Channel Set Ho Gaya!")
     .setDescription(
       `${targetChannel} mein **${gameLabel}** updates aate rahenge!\n\n` +
-      `⏰ Har **${CHECK_INTERVAL_MINUTES} minutes** mein auto check hoga.\n` +
+      `⏰ Har **${CHECK_INTERVAL_SECONDS} seconds** mein auto check hoga.\n` +
       `📊 Status dekhne ke liye \`/pubg status\` use karo.`
     )
     .addFields(
@@ -454,7 +454,7 @@ client.on("interactionCreate", async (interaction) => {
       .addFields(
         { name: "🖥️ PUBG PC Channel", value: pcCh, inline: false },
         { name: "📱 PUBG Mobile Channel", value: mobileCh, inline: false },
-        { name: "⏰ Check Interval", value: `Har ${CHECK_INTERVAL_MINUTES} minutes`, inline: true },
+        { name: "⏰ Check Interval", value: `Har ${CHECK_INTERVAL_SECONDS} seconds`, inline: true },
         { name: "🎮 Games", value: "PUBG PC + PUBG Mobile", inline: true }
       )
       .setTimestamp()
